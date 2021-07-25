@@ -1,4 +1,4 @@
-import { App, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { App, Modal, Notice, Plugin, PluginSettingTab, Setting, Workspace, WorkspaceSidedock } from 'obsidian';
 
 interface MyPluginSettings {
 	mySetting: string;
@@ -30,6 +30,7 @@ export default class MyPlugin extends Plugin {
 			// },
 			checkCallback: (checking: boolean) => {
 				let leaf = this.app.workspace.activeLeaf;
+        // console.log("Hello checking", this.app.workspace.activeLeaf)
 				if (leaf) {
 					if (!checking) {
 						new SampleModal(this.app).open();
@@ -39,6 +40,26 @@ export default class MyPlugin extends Plugin {
 				return false;
 			}
 		});
+
+    this.addCommand({
+      id: 'toggle-explorer',
+      name: 'Toggle Explorer',
+      checkCallback: (checking: boolean) => {
+				let leaf = this.app.workspace.activeLeaf;
+				if (leaf) {
+					if (!checking) {
+            console.log("Toggle sidebar")
+						// new SampleModal(this.app).open();
+            // this.app.workspace.
+            // const workspace = new WorkspaceSidedock()
+            // workspace.toggle()
+            this.app.workspace.leftSplit.toggle()
+					}
+					return true;
+				}
+				return false;
+      }
+    })
 
 		this.addSettingTab(new SampleSettingTab(this.app, this));
 
